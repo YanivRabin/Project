@@ -6,7 +6,7 @@ import test.Word;
 public class MainTrain {
 	
 	public static void testBag() {
-		Bag b= Tile.Bag.getBag();
+		Bag b=Tile.Bag.getBag();
 		Bag b1=Tile.Bag.getBag();
 		if(b1!=b)
 			System.out.println("your Bag in not a Singleton (-5)");
@@ -39,7 +39,7 @@ public class MainTrain {
 	}
 	
 	
-	
+
 	private static Tile[] get(String s) {
 		Tile[] ts=new Tile[s.length()];
 		int i=0;
@@ -49,8 +49,7 @@ public class MainTrain {
 		}
 		return ts;
 	}
-	
-	
+
 	public static void testBoard() {
 		Board b = Board.getBoard();
 		if(b!=Board.getBoard())
@@ -89,14 +88,20 @@ public class MainTrain {
 			System.out.println("problem in placeWord for 3ed word (-10)");
 
 		Word mob=new Word(get("_OB"), 8, 7, false);
-		if(b.tryPlaceWord(mob)!=18)
-			System.out.println("problem in placeWord for 4th word (-10)");
+		int mobpoint = b.tryPlaceWord(mob);
+		if(mobpoint!=18)
+			System.out.println("mob point sould be 18");
 
 		Word bit=new Word(get("BIT"), 10, 4, false);
-		if(b.tryPlaceWord(bit)!=22)
-			System.out.println("problem in placeWord for 5th word (-15)");
-		
-
+		int bitpoint = b.tryPlaceWord(bit);
+		if(bitpoint!=22)
+			System.out.println("bitpoint should be 22 (-15)");
+		Word bit2=new Word(get("S_TA"), 9, 4, true);
+		if(b.tryPlaceWord(bit2)!=28)
+			System.out.println("SBTA should be 28 (-15)");
+		Word bit3=new Word(get("A_ONE"), 11, 3, false);
+		if(b.tryPlaceWord(bit3)!=26)
+			System.out.println("ATONE should be 26 (-15)");
 	}
 
 	public static void main(String[] args) {

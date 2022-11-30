@@ -1,5 +1,7 @@
 package test;
 
+
+import java.util.Objects;
 import java.util.Random;
 
 public class Tile {
@@ -13,7 +15,20 @@ public class Tile {
         this.score = score;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return letter == tile.letter && score == tile.score;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(letter, score);
+    }
+
+    //inner class bag
     public static class Bag {
 
         private static Bag singleBag = null;
@@ -47,6 +62,7 @@ public class Tile {
 
             if (singleBag == null)
                 singleBag = new Bag();
+
             return singleBag;
         }
 
@@ -59,7 +75,11 @@ public class Tile {
             return size;
         }
 
-        public int[] getQuantities() { return letterQuantity; }
+        public int[] getQuantities() { return letterQuantity.clone(); }
+
+//            int[] temp = new int[26];
+//            System.arraycopy(letterQuantity, 0, temp, 0, letterQuantity.length);
+//            return temp;
 
         public Tile getTile(char c) {
             if (c < 'A' || c > 'Z' || letterQuantity[c - 'A'] < 1)
