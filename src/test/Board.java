@@ -98,6 +98,9 @@ public class Board {
                 if (t == null)
                     if (board[i][w.col] == null)
                         return false;
+//                else
+//                    if (board[i][w.col] != null)
+//                        return false;
                 i++;
             }
         }
@@ -109,6 +112,9 @@ public class Board {
                 if (t == null)
                     if (board[w.row][i] == null)
                         return false;
+//                else
+//                    if (board[w.row][i] != null)
+//                        return false;
                 i++;
             }
         }
@@ -153,12 +159,6 @@ public class Board {
     public ArrayList<Word> getWords(Word w) {
 
         ArrayList<Word> words = new ArrayList<>();
-
-        //  for (Tile t : w.tiles)
-        //    if (t.letter == '_')
-        //        t = null;
-
-        //words.add(w);
 
         if (w.vertical) {
 
