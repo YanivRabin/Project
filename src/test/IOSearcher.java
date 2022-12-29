@@ -5,11 +5,9 @@ import java.util.Scanner;
 
 public class IOSearcher {
 
-    public static boolean search(String str, String file1, String file2)  {
+    public static boolean search(String str, String... args)  {
 
-        String[] files = new String[2];
-        files[0] = file1;
-        files[1] = file2;
+        String[] files = args;
 
         for (String file : files) {
 

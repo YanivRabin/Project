@@ -10,13 +10,11 @@ public class BloomFilter {
     String[] files;
     BitSet bitSet;
 
-    public BloomFilter(int size, String file1, String file2) {
+    public BloomFilter(int size, String... args) {
 
         bitSize = size;
-        files = new String[2];
-        files[0] = file1;
-        files[1] = file2;
         bitSet = new BitSet();
+        files = args;
     }
 
     public void add(String s)  {
