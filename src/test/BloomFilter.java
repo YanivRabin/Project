@@ -7,34 +7,32 @@ import java.util.*;
 public class BloomFilter {
 
     int bitSize;
-    String[] files;
-    BitSet bitSet;
+    private final ArrayList<MessageDigest> messageDigests = new ArrayList<>();
+    private final BitSet bitSet;
 
     public BloomFilter(int size, String... args) {
 
         bitSize = size;
-        bitSet = new BitSet();
-        files = args;
+        bitSet = new BitSet(size);
+        for (String hashAlgo : args) {
+            try {
+                messageDigests.add(MessageDigest.getInstance(hashAlgo));
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void add(String s)  {
 
-        for (String file : files) {
+        for (MessageDigest md : messageDigests) {
 
-            MessageDigest md = null;
-            try {
-
-                //init hash func (if getInstance(file) not working it will go to catch)
-                md = MessageDigest.getInstance(file);
-                //return bytes array for s from the hash func
-                byte[] bytes = md.digest(s.getBytes());
-                //get bytes value
-                BigInteger bigInt = new BigInteger(bytes);
-                int x = Math.abs(bigInt.intValue());
-                //byte value mod bitSize give index to turn on
-                bitSet.set(x % bitSize, true);
-            }
-            catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
+            //return bytes array for s from the hash func
+            byte[] bytes = md.digest(s.getBytes());
+            //get bytes value
+            BigInteger bigInt = new BigInteger(bytes);
+            //byte value mod bitSize give index to turn on
+            bitSet.set(Math.abs(bigInt.intValue() % bitSize));
         }
     }
 
@@ -50,20 +48,14 @@ public class BloomFilter {
 
     public boolean contains(String s) {
 
-        for (String file : files) {
+        for (MessageDigest md : messageDigests) {
 
-            MessageDigest md = null;
-            try {
+            byte[] bytes = md.digest(s.getBytes());
+            BigInteger bigInt = new BigInteger(bytes);
 
-                md = MessageDigest.getInstance(file);
-                byte[] bytes = md.digest(s.getBytes());
-                BigInteger bigInt = new BigInteger(bytes);
-                int x = Math.abs(bigInt.intValue());
-                if (bitSet.get(x % bitSize))
-                    return true;
-            }
-            catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
+            if (!bitSet.get(Math.abs(bigInt.intValue() % bitSize)))
+                return false;
         }
-        return false;
+        return true;
     }
 }

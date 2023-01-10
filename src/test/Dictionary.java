@@ -9,14 +9,12 @@ public class Dictionary {
     BloomFilter bloomFilter;
     String[] files;
 
-    public Dictionary(String file1, String file2) {
+    public Dictionary(String... args) {
 
         lru = new CacheManager(400, new LRU());
         lfu = new CacheManager(100, new LFU());
         bloomFilter = new BloomFilter(256,"MD5","SHA1");
-        files = new String[2];
-        files[0] = file1;
-        files[1] = file2;
+        files = args;
 
         for (String file : files) {
 
@@ -63,7 +61,7 @@ public class Dictionary {
 
     public boolean challenge(String str) {
 
-        if(IOSearcher.search(str, files[0],files[1])) {
+        if(IOSearcher.search(str, files)) {
 
             lru.add(str);
             return true;
